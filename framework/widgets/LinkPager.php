@@ -92,15 +92,10 @@ class LinkPager extends Widget
      */
     public $lastPageLabel = false;
     /**
-     * @var string|boolean the text label for the "left middle" page button. Note that this will NOT be HTML-encoded.
-     * Default is false that means the "left middle" page button will not be displayed.
+     * @var boolean whether to show link the "average" page button.
+     * When false that means the "average" page button will not be displayed.
      */
-    public $leftMiddlePageLabel = false;
-    /**
-     * @var string|boolean the text label for the "right middle" page button. Note that this will NOT be HTML-encoded.
-     * Default is false that means the "right middle" page button will not be displayed.
-     */
-    public $rightMiddlePageLabel = false;
+    public $averagePage = true;
     /**
      * @var boolean whether to register link tags in the HTML header for prev, next, first and last page.
      * Defaults to `false` to avoid conflicts when multiple pagers are used on one page.
@@ -179,28 +174,28 @@ class LinkPager extends Widget
         // calculate internal pages
         list($beginPage, $endPage) = $this->getPageRange();
 
-        // calculate left middle page
-        $leftMiddlePage = 1;
-        if ($this->leftMiddlePageLabel !== false && $beginPage > 5) {
+        // calculate left average page
+        $leftAveragePage = 1;
+        if ($this->averagePage !== false && $beginPage > 5) {
             $beginPage += 2;
-            $leftMiddlePage = floor(($beginPage + 1)/2);
+            $leftAveragePage = floor(($beginPage + 1)/2);
         }
 
-        // calculate right middle page
-        $rightMiddlePage = $pageCount;
-        if ($this->rightMiddlePageLabel !== false && $endPage + 5 < $pageCount) {
+        // calculate right average page
+        $rightAveragePage = $pageCount;
+        if ($this->averagePage !== false && $endPage + 5 < $pageCount) {
             $endPage -= 2;
-            $rightMiddlePage = floor(($endPage + $pageCount)/2);
+            $rightAveragePage = floor(($endPage + $pageCount)/2);
         }
 
-        // left middle page
-        if ($leftMiddlePage > 1 && $leftMiddlePage < $beginPage) {
+        // average page
+        if ($leftAveragePage > 1 && $leftAveragePage < $beginPage) {
             if($this->firstPageLabel === false){
                 // first page
                 $buttons[] = $this->renderPageButton(1, 0, $this->firstPageCssClass, false, false);
             }
-            // left middle page
-            $buttons[] = $this->renderPageButton($this->leftMiddlePageLabel, $leftMiddlePage, null, false, false);
+            // left average page
+            $buttons[] = $this->renderPageButton($leftAveragePage+1, $leftAveragePage, null, false, false);
         }
 
         // internal page
@@ -208,10 +203,10 @@ class LinkPager extends Widget
             $buttons[] = $this->renderPageButton($i + 1, $i, null, false, $i == $currentPage);
         }
 
-        // right middle page
-        if ($rightMiddlePage > $endPage && $rightMiddlePage < $pageCount) {
-            // middle page
-            $buttons[] = $this->renderPageButton($this->rightMiddlePageLabel, $rightMiddlePage, null, false, false);
+        // average page
+        if ($rightAveragePage > $endPage && $rightAveragePage < $pageCount) {
+            // right average page
+            $buttons[] = $this->renderPageButton($rightAveragePage+1, $rightAveragePage, null, false, false);
             if ($this->lastPageLabel === false) {
                 // last page
                 $buttons[] = $this->renderPageButton($pageCount, $pageCount - 1, $this->lastPageCssClass, false, false);
