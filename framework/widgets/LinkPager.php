@@ -68,7 +68,7 @@ class LinkPager extends Widget
      */
     public $disabledPageCssClass = 'disabled';
     /**
-     * @var integer maximum number of page buttons that can be displayed. Defaults to 10.
+     * @var integer maximum number of page buttons that can be displayed. Defaults to 9.
      */
     public $maxButtonCount = 9;
     /**
