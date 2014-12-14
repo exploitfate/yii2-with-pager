@@ -185,7 +185,7 @@ class LinkPager extends Widget
         $rightAveragePage = $pageCount;
         if ($this->averagePage !== false && $endPage + 5 < $pageCount) {
             $endPage -= 2;
-            $rightAveragePage = floor(($endPage + $pageCount)/2);
+            $rightAveragePage = ceil(($endPage + $pageCount)/2);
         }
 
         // average page
