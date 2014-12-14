@@ -230,6 +230,8 @@ class LinkPager extends Widget
         if ($this->lastPageLabel !== false) {
             $buttons[] = $this->renderPageButton($this->lastPageLabel, $pageCount - 1, $this->lastPageCssClass, $currentPage >= $pageCount - 1, false);
         }
+
+        return Html::tag('ul', implode("\n", $buttons), $this->options);
     }
 
     /**
