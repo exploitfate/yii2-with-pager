@@ -197,7 +197,7 @@ class LinkPager extends Widget
         if ($leftMiddlePage > 1 && $leftMiddlePage < $beginPage) {
             if($this->firstPageLabel === false){
                 // first page
-                $buttons[] = $this->renderPageButton(1, 0, null, false, false);
+                $buttons[] = $this->renderPageButton(1, 0, $this->firstPageCssClass, false, false);
             }
             // left middle page
             $buttons[] = $this->renderPageButton($this->leftMiddlePageLabel, $leftMiddlePage, null, false, false);
@@ -214,7 +214,7 @@ class LinkPager extends Widget
             $buttons[] = $this->renderPageButton($this->rightMiddlePageLabel, $rightMiddlePage, null, false, false);
             if ($this->lastPageLabel === false) {
                 // last page
-                $buttons[] = $this->renderPageButton($pageCount, $pageCount - 1, null, false, false);
+                $buttons[] = $this->renderPageButton($pageCount, $pageCount - 1, $this->lastPageCssClass, false, false);
             }
         }
 
