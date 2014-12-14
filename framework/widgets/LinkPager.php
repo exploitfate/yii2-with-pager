@@ -92,6 +92,16 @@ class LinkPager extends Widget
      */
     public $lastPageLabel = false;
     /**
+     * @var string|boolean the text label for the "left middle" page button. Note that this will NOT be HTML-encoded.
+     * Default is false that means the "left middle" page button will not be displayed.
+     */
+    public $leftMiddlePageLabel = false;
+    /**
+     * @var string|boolean the text label for the "right middle" page button. Note that this will NOT be HTML-encoded.
+     * Default is false that means the "right middle" page button will not be displayed.
+     */
+    public $rightMiddlePageLabel = false;
+    /**
      * @var boolean whether to register link tags in the HTML header for prev, next, first and last page.
      * Defaults to `false` to avoid conflicts when multiple pagers are used on one page.
      * @see http://www.w3.org/TR/html401/struct/links.html#h-12.1.2
@@ -123,7 +133,7 @@ class LinkPager extends Widget
         if ($this->registerLinkTags) {
             $this->registerLinkTags();
         }
-        echo $this->renderPageButtons();
+        return $this->renderPageButtons();
     }
 
     /**
@@ -166,10 +176,46 @@ class LinkPager extends Widget
             $buttons[] = $this->renderPageButton($this->prevPageLabel, $page, $this->prevPageCssClass, $currentPage <= 0, false);
         }
 
-        // internal pages
+        // calculate internal pages
         list($beginPage, $endPage) = $this->getPageRange();
+
+        // calculate left middle page
+        $leftMiddlePage = 1;
+        if ($this->leftMiddlePageLabel !== false && $beginPage > 5) {
+            $beginPage += 2;
+            $leftMiddlePage = floor(($beginPage + 1)/2);
+        }
+
+        // calculate right middle page
+        $rightMiddlePage = $pageCount;
+        if ($this->rightMiddlePageLabel !== false && $endPage + 5 < $pageCount) {
+            $endPage -= 2;
+            $rightMiddlePage = floor(($endPage + $pageCount)/2);
+        }
+
+        // left middle page
+        if ($leftMiddlePage > 1 && $leftMiddlePage < $beginPage) {
+            if($this->firstPageLabel === false){
+                // first page
+                $buttons[] = $this->renderPageButton(1, 0, null, false, false);
+            }
+            // left middle page
+            $buttons[] = $this->renderPageButton($this->leftMiddlePageLabel, $leftMiddlePage, null, false, false);
+        }
+
+        // internal page
         for ($i = $beginPage; $i <= $endPage; ++$i) {
             $buttons[] = $this->renderPageButton($i + 1, $i, null, false, $i == $currentPage);
+        }
+
+        // right middle page
+        if ($rightMiddlePage > $endPage && $rightMiddlePage < $pageCount) {
+            // middle page
+            $buttons[] = $this->renderPageButton($this->rightMiddlePageLabel, $rightMiddlePage, null, false, false);
+            if ($this->lastPageLabel === false) {
+                // last page
+                $buttons[] = $this->renderPageButton($pageCount, $pageCount - 1, null, false, false);
+            }
         }
 
         // next page
@@ -184,8 +230,6 @@ class LinkPager extends Widget
         if ($this->lastPageLabel !== false) {
             $buttons[] = $this->renderPageButton($this->lastPageLabel, $pageCount - 1, $this->lastPageCssClass, $currentPage >= $pageCount - 1, false);
         }
-
-        return Html::tag('ul', implode("\n", $buttons), $this->options);
     }
 
     /**
