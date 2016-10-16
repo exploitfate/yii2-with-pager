@@ -23,7 +23,7 @@ Supongamos que deseas exponer los datos de los usuarios vía APIs RESTful. Los d
 y ya tienes creado la clase [[yii\db\ActiveRecord|ActiveRecord]] `app\models\User` para acceder a los datos del usuario.
 
 
-## Creando un controlador <a name="creating-controller"></a>
+## Creando un controlador <span id="creating-controller"></span>
 
 Primero, crea una clase controladora `app\controllers\UserController` como la siguiente,
 
@@ -42,7 +42,7 @@ La clase controladora extiende de [[yii\rest\ActiveController]]. Especificado po
 como `app\models\User`, el controlador sabe que modelo puede ser usado para recoger y manipular sus datos.
 
 
-## Configurando las reglas de las URL <a name="configuring-url-rules"></a>
+## Configurando las reglas de las URL <span id="configuring-url-rules"></span>
 
 A continuación, modifica la configuración del componente `urlManager` en la configuración de tu aplicación:
 
@@ -61,7 +61,7 @@ La configuración anterior principalmente añade una regla URL para el controlad
 que los datos de user pueden ser accedidos y manipulados con URLs amigables y verbos HTTP significativos.
 
 
-## Habilitando entradas JSON <a name="enabling-json-input"></a>
+## Habilitando entradas JSON <span id="enabling-json-input"></span>
 
 Para permitir que la API acepte datos de entrada con formato JSON, configura la propiedad [[yii\web\Request::$parsers|parsers]]
 del componente de aplicación `request` para usar [[yii\web\JsonParser]] para entradas JSON:
@@ -74,11 +74,11 @@ del componente de aplicación `request` para usar [[yii\web\JsonParser]] para en
 ]
 ```
 
-> Consejo: La configuración anterior es opcional. Sin la configuración anterior, la API sólo reconocería
+> Tip: La configuración anterior es opcional. Sin la configuración anterior, la API sólo reconocería
   `application/x-www-form-urlencoded` y `multipart/form-data` como formatos de entrada.
 
 
-## Probándolo <a name="trying-it-out"></a>
+## Probándolo <span id="trying-it-out"></span>
 
 Con la mínima cantidad de esfuerzo, tienes ya finalizado tu tarea de crear las APIs RESTful
 para acceder a los datos de user. Las APIs que tienes creado incluyen:
@@ -93,7 +93,7 @@ para acceder a los datos de user. Las APIs que tienes creado incluyen:
 * `OPTIONS /users`: muestra los verbos compatibles respecto al punto final `/users`;
 * `OPTIONS /users/123`: muestra los verbos compatibles respecto al punto final `/users/123`.
 
-> Información: Yii automáticamente pluraliza los nombres de los controladores para usarlo en los puntos finales.
+> Info: Yii automáticamente pluraliza los nombres de los controladores para usarlo en los puntos finales.
 > Puedes configurar esto usando la propiedad [[yii\rest\UrlRule::$pluralize]].
 
 Puedes acceder a tus APIs con el comando `curl` de la siguiente manera,
@@ -172,7 +172,7 @@ Content-Type: application/json; charset=UTF-8
 {"id":1,"username":"example","email":"user@example.com","created_at":1414674789,"updated_at":1414674789}
 ```
 
-> Consejo: También puedes acceder a tus APIs a través del navegador web  introduciendo la URL `http://localhost/users`.
+> Tip: También puedes acceder a tus APIs a través del navegador web  introduciendo la URL `http://localhost/users`.
   Sin embargo, es posible que necesites algunos plugins para el navegador para enviar cabeceras especificas en la petición.
 
 Como se puede ver, en las cabeceras de la respuesta, hay información sobre la cuenta total, número de páginas, etc.
@@ -183,12 +183,12 @@ Utilizando los parámetros `fields` y `expand`, puedes también especificar que 
 Por ejemplo, la URL `http://localhost/users?fields=id,email` sólo devolverá los campos `id` y `email`.
 
 
-> Información: Puedes haber notado que el resultado de `http://localhost/users` incluye algunos campos sensibles,
+> Info: Puedes haber notado que el resultado de `http://localhost/users` incluye algunos campos sensibles,
 > tal como `password_hash`, `auth_key`. Seguramente no quieras que éstos aparecieran en el resultado de tu API.
 > Puedes y deberías filtrar estos campos como se describe en la sección [Response Formatting](rest-response-formatting.md).
 
 
-## Resumen <a name="summary"></a>
+## Resumen <span id="summary"></span>
 
 Utilizando el framework Yii API RESTful, implementa un punto final API en términos de una acción de un controlador, y utiliza
 un controlador para organizar las acciones que implementan los puntos finales para un sólo tipo de recurso.

@@ -3,7 +3,7 @@ Scripts de Entrada
 
 Scripts de entrada são o primeiro passo no processo de inicialização da aplicação.
 Uma aplicação (seja uma aplicação Web ou uma aplicação console) possui um único script de
-entrada. Os usuários finais fazem requisições a scripts de entrada que criam
+entrada. Os usuários finais fazem requisições nos scripts de entrada que criam
 as instâncias da aplicação e redirecionam as requisições para elas.
 
 Os scripts de entrada para aplicações Web devem estar armazenados em diretórios
@@ -20,16 +20,16 @@ possam executar aplicações do console através do comando
 O trabalho principal dos scripts de entrada é o seguinte:
 
 * Definir constantes globais;
-* Registrar o [autoloader do Composer](http://getcomposer.org/doc/01-basic-usage.md#autoloading);
+* Registrar o [autoloader do Composer](https://getcomposer.org/doc/01-basic-usage.md#autoloading);
 * Incluir o arquivo da classe [[Yii]];
 * Carregar a configuração da aplicação;
 * Criar e configurar uma instância da [aplicação](structure-applications.md);
 * Chamar [[yii\base\Application::run()]] para processar as requisições que chegam.
 
 
-## Aplicações Web <a name="web-applications"></a>
+## Aplicações Web <span id="web-applications"></span>
 
-Este é o código no script de entrada para o [Modelo Básico de Aplicação Web](start-installation.md).
+Este é o código no script de entrada para o [Template Básico de Projetos](start-installation.md).
 
 ```php
 <?php
@@ -51,7 +51,7 @@ $config = require(__DIR__ . '/../config/web.php');
 ```
 
 
-## Aplicações Console <a name="console-applications"></a>
+## Aplicações Console <span id="console-applications"></span>
 
 De forma semelhante, o seguinte é o código do script de entrada de uma aplicação
 do console:
@@ -69,10 +69,6 @@ do console:
 
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 
-// o fcgi não tem STDIN e STDOUT definidos por padrão
-defined('STDIN') or define('STDIN', fopen('php://stdin', 'r'));
-defined('STDOUT') or define('STDOUT', fopen('php://stdout', 'w'));
-
 // registra o autoloader do Composer
 require(__DIR__ . '/vendor/autoload.php');
 
@@ -88,7 +84,7 @@ exit($exitCode);
 ```
 
 
-## Definindo Constantes <a name="defining-constants"></a>
+## Definindo Constantes <span id="defining-constants"></span>
 
 Os scrips de entrada são o melhor lugar para definir as constantes globais. O
 Yii suporta as seguintes três constantes:

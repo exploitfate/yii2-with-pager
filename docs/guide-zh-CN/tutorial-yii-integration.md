@@ -4,12 +4,12 @@
 有时，你可能会需要在 Yii 应用中使用第三方的代码。又或者是你想要在第三方系统中把 Yii 作为类库引用。在下面这个板块中，我们向你展示如何实现这些目标。
 
 
-## 在 Yii 中使用第三方类库 <a name="using-libs-in-yii"></a>
+## 在 Yii 中使用第三方类库 <span id="using-libs-in-yii"></span>
 
 要想在 Yii 应用中使用第三方类库，你主要需要确保这些库中的类文件都可以被正常导入或可以被自动加载。
 
 
-### 使用 Composer 包 <a name="using-composer-packages"></a>
+### 使用 Composer 包 <span id="using-composer-packages"></span>
 
 目前很多第三方的类库都以 [Composer](https://getcomposer.org/) 包的形式发布。你只需要以下两个简单的步骤即可安装他们：
 
@@ -28,7 +28,7 @@ require(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');
 ```
 
 
-### 使用下载的类库 <a name="using-downloaded-libs"></a>
+### 使用下载的类库 <span id="using-downloaded-libs"></span>
 
 若你的类库并未发布为一个 Composer 包，你可以参考以下安装说明来安装它。在大多数情况下，你需要预先下载一个发布文件，并把它解压缩到
 `BasePath/vendor` 目录，这里的 `BasePath` 代指你应用程序自身的 [base path（主目录）](structure-applications.md#basePath)。
@@ -61,17 +61,16 @@ Yii::$classMap['Class2'] = 'path/to/Class2.php';
 ```
 
 
-## 在第三方系统内使用 Yii <a name="using-yii-in-others"></a>
+## 在第三方系统内使用 Yii <span id="using-yii-in-others"></span>
 
 因为 Yii 提供了很多牛逼的功能，有时，你可能会想要使用它们中的一些功能用来支持开发或完善某些第三方的系统，比如：WordPress，Joomla，或是用其他 PHP 框架开发的应用程序。举两个例子吧，你可能会想念方便的 [[yii\helpers\ArrayHelper]] 类，或在第三方系统中使用
 [Active Record](db-active-record.md) 活动记录功能。要实现这些目标，你只需两个步骤：安装 Yii，启动 Yii。
 
 若这个第三方系统支持 Composer 管理他的依赖文件，你可以直接运行一下命令来安装 Yii：
 
-```
-php composer.phar require yiisoft/yii2-framework:*
-php composer.phar install
-```
+    composer global require "fxp/composer-asset-plugin:^1.2.0"
+    composer require yiisoft/yii2
+    composer install
 
 不然的话，你可以[下载](http://www.yiiframework.com/download/) Yii 的发布包，并把它解压到对应系统的 `BasePath/vendor` 目录内。
 
@@ -91,12 +90,12 @@ new yii\web\Application($yiiConfig); // 千万别在这调用 run() 方法。（
 现在，你就可以使用 Yii 提供的绝大多数功能了。比如，创建 AR 类，并用它们来操作数据库。
 
 
-## 配合使用 Yii 2 和 Yii 1 <a name="using-both-yii2-yii1"></a>
+## 配合使用 Yii 2 和 Yii 1 <span id="using-both-yii2-yii1"></span>
 
 如果你之前使用 Yii 1，大概你也有正在运行的 Yii 1 应用吧。不必用 Yii 2 重写整个应用，你也可以通过增添对哪些
 Yii 2 独占功能的支持来增强这个系统。下面我们就来详细描述一下具体的实现过程。
 
-> 注意：Yii 2 需要 PHP 5.4+ 的版本。你需要确保你的服务器以及现有应用都可以支持 PHP 5.4。
+> Note: Yii 2 需要 PHP 5.4+ 的版本。你需要确保你的服务器以及现有应用都可以支持 PHP 5.4。
 
 首先，参考前文板块中给出的方法，在已有的应用中安装 Yii 2。
 
@@ -131,7 +130,7 @@ class Yii extends \yii\BaseYii
 
 Yii::$classMap = include($yii2path . '/classes.php');
 
-// 通过 Yii 1 注册 Yii2 的类自动加载器
+// 通过 Yii 1 注册 Yii 2 的类自动加载器
 Yii::registerAutoloader(['Yii', 'autoload']);
 ```
 

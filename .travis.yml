@@ -4,24 +4,21 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
+  - 7.1
+  - nightly
   - hhvm
-  - hhvm-nightly
+
+matrix:
+  allow_failures:
+    - php: 7.1
+    - php: nightly
 
 env:
   - CUBRID_VERSION=9.3.0/CUBRID-9.3.0.0206 CUBRID_PDO_VERSION=9.3.0.0001
 
-# run build against hhvm but allow them to fail
-# http://docs.travis-ci.com/user/build-configuration/#Rows-That-are-Allowed-To-Fail
-matrix:
-  fast_finish: true
-  allow_failures:
-    - php: hhvm-nightly
-
 services:
-  - redis-server
   - memcached
-  - elasticsearch
-  - mongodb
 
 # faster builds on new travis setup not using sudo
 sudo: false
@@ -29,7 +26,7 @@ sudo: false
 # cache vendor dirs
 cache:
   directories:
-#    - cubrid # caching cubrid breaks the build on a regular basis and has nearly no speedup
+#    - cubrid/9.3.0
     - vendor
     - $HOME/.composer/cache
 
@@ -38,54 +35,47 @@ addons:
   postgresql: "9.3"
 
 install:
+  - |
+    if [ $TRAVIS_PHP_VERSION != '5.6' ]; then
+        # disable xdebug for performance reasons when code coverage is not needed
+        phpenv config-rm xdebug.ini || echo "xdebug is not installed"
+    fi
   - travis_retry composer self-update && composer --version
-  - travis_retry composer global require "fxp/composer-asset-plugin:1.0.0-beta4"
+  - travis_retry composer global require "fxp/composer-asset-plugin:^1.2.0"
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
 # core framework:
-  - travis_retry composer install --prefer-dist --no-interaction
-  - tests/unit/data/travis/mongodb-setup.sh
-# TODO: APC currently fails composer. https://github.com/composer/composer/issues/3405
-#  - tests/unit/data/travis/apc-setup.sh
-  - tests/unit/data/travis/memcache-setup.sh
-  - tests/unit/data/travis/cubrid-setup.sh
-# print elasticsearch version
-  - curl http://localhost:9200
-# codeception
-  - travis_retry composer global require "codeception/codeception=2.0.*" "codeception/specify=*" "codeception/verify=*"
-# basic and advanced application:
-  - tests/unit/data/travis/setup-apps.sh
+  - travis_retry composer update --prefer-dist --no-interaction
+  - tests/data/travis/apc-setup.sh
+  - tests/data/travis/memcache-setup.sh
+#  - tests/data/travis/cubrid-setup.sh
 
 before_script:
-  - echo 'elasticsearch version ' && curl http://localhost:9200/
+  # show some versions and env information
+  - php -r "echo INTL_ICU_VERSION . \"\n\";"
+  - php -r "echo INTL_ICU_DATA_VERSION . \"\n\";"
+  - mysql --version
+  - psql --version
+
+  # initialize databases
   - mysql -e 'CREATE DATABASE yiitest;';
   - psql -U postgres -c 'CREATE DATABASE yiitest;';
-  - tests/unit/data/travis/sphinx-setup.sh
-  - mongo yii2test --eval 'db.addUser("travis", "test");'
-# basic and advanced application:
-  - tests/unit/data/travis/init-apps.sh
+
+  - |
+    if [ $TRAVIS_PHP_VERSION = '5.6' ]; then
+      PHPUNIT_FLAGS="--coverage-clover=coverage.clover"
+    fi
+
 
 script:
-  - vendor/bin/phpunit --verbose --coverage-clover=coverage.clover --exclude-group mssql,oci,wincache,xcache,zenddata
-  - |
-    if (php --version | grep -i HipHop > /dev/null); then
-      echo "Skipping basic application tests on HHVM"
-    else
-      cd apps/basic/web
-      php -S localhost:8080 > /dev/null 2>&1 &
-      cd ../tests
-      codecept run
-    fi
-  - |
-    if (php --version | grep -i HipHop > /dev/null); then
-      echo "Skipping advanced application tests on HHVM"
-    else
-      cd apps/advanced
-      php -S localhost:8080 > /dev/null 2>&1 &
-      cd tests
-      codecept run
-    fi
+  # validate composer.json
+  - composer validate --no-check-lock
+  - cd framework && composer validate --no-check-lock && cd ..
+  # run PHPUnit
+  - vendor/bin/phpunit --verbose $PHPUNIT_FLAGS --exclude-group mssql,oci,wincache,xcache,zenddata,cubrid
 
 after_script:
-  - cd ../../..
-  - travis_retry wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+  - |
+    if [ $TRAVIS_PHP_VERSION = '5.6' ]; then
+      travis_retry wget https://scrutinizer-ci.com/ocular.phar
+      php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+    fi

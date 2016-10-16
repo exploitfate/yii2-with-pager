@@ -37,22 +37,23 @@ use yii\di\Instance;
 class DbCache extends Cache
 {
     /**
-     * @var Connection|string the DB connection object or the application component ID of the DB connection.
+     * @var Connection|array|string the DB connection object or the application component ID of the DB connection.
      * After the DbCache object is created, if you want to change this property, you should only assign it
      * with a DB connection object.
+     * Starting from version 2.0.2, this can also be a configuration array for creating the object.
      */
     public $db = 'db';
     /**
      * @var string name of the DB table to store cache content.
      * The table should be pre-created as follows:
      *
-     * ~~~
+     * ```php
      * CREATE TABLE cache (
      *     id char(128) NOT NULL PRIMARY KEY,
      *     expire int(11),
      *     data BLOB
      * );
-     * ~~~
+     * ```
      *
      * where 'BLOB' refers to the BLOB-type of your preferred DBMS. Below are the BLOB type
      * that can be used for some popular DBMS:
@@ -118,7 +119,7 @@ class DbCache extends Cache
      * Retrieves a value from cache with a specified key.
      * This is the implementation of the method declared in the parent class.
      * @param string $key a unique key identifying the cached value
-     * @return string|boolean the value stored in cache, false if the value is not in the cache or expired.
+     * @return string|false the value stored in cache, false if the value is not in the cache or expired.
      */
     protected function getValue($key)
     {
@@ -178,7 +179,7 @@ class DbCache extends Cache
      * This is the implementation of the method declared in the parent class.
      *
      * @param string $key the key identifying the value to be cached
-     * @param string $value the value to be cached
+     * @param string $value the value to be cached. Other types (if you have disabled [[serializer]]) cannot be saved.
      * @param integer $duration the number of seconds in which the cached value will expire. 0 means never expire.
      * @return boolean true if the value is successfully stored into cache, false otherwise
      */
@@ -204,7 +205,7 @@ class DbCache extends Cache
      * This is the implementation of the method declared in the parent class.
      *
      * @param string $key the key identifying the value to be cached
-     * @param string $value the value to be cached
+     * @param string $value the value to be cached. Other types (if you have disabled [[serializer]]) cannot be saved.
      * @param integer $duration the number of seconds in which the cached value will expire. 0 means never expire.
      * @return boolean true if the value is successfully stored into cache, false otherwise
      */

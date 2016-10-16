@@ -1,4 +1,4 @@
-﻿Modelos
+Modelos
 =======
 
 Los modelos forman parte de la arquitectura 
@@ -18,11 +18,11 @@ soporta muchas características útiles:
 
 La clase 'modelo' también es una base para modelos más avanzados, tales como [Active Records](db-active-record.md).
 
-> Información: No es obligatorio basar las clases modelo en [[yii\base\Model]]. Sin embargo, debido a que hay muchos 
+> Info: No es obligatorio basar las clases modelo en [[yii\base\Model]]. Sin embargo, debido a que hay muchos 
   componentes de Yii construidos para dar soporte a [[yii\base\Model]], por lo general, es la clase base preferible 
   para un modelo.
 
-### Atributos <a name="attributes"></a>
+### Atributos <span id="attributes"></span>
 
 Los modelos representan los datos de negocio en términos de *atributos*. Cada atributos es como una propiedad 
 públicamente accesible de un modelo. El método [[yii\base\Model::attributes()]] especifica qué atributos tiene la 
@@ -55,7 +55,7 @@ foreach ($model as $name => $value) {
 }
 ```
 
-### Definir Atributos <a name="defining-attributes"></a>
+### Definir Atributos <span id="defining-attributes"></span>
 
 Por defecto, si un modelo extiende directamente a [[yii\base\Model]], todas sus variables miembro no estáticas son 
 atributos. Por ejemplo, la siguiente clase modelo 'ContactForm' tiene cuatro atributos: 'name', 'email', 'subject', 
@@ -81,7 +81,7 @@ de las columnas de la tabla de la base de datos asociada como el nombre de sus a
 también puede necesitar sobrescribir los métodos mágicos como `__get()`, `__set()` de modo que se puede acceder a los 
 atributos como a propiedades de objetos normales.
 
-### Etiquetas de atributo <a name="attribute-labels"></a>
+### Etiquetas de atributo <span id="attribute-labels"></span>
 
 Cuando se muestran valores o se obtienen entradas para atributos, normalmente se necesita mostrar etiquetas asociadas 
 a los atributos. Por ejemplo, dado un atributo con nombre 'segundoApellido', es posible que se quiera mostrar la 
@@ -146,10 +146,10 @@ public function attributeLabels()
 Incluso se puede definir etiquetas de atributo condicionales. Por ejemplo, basándose en el [escenario](#scenarios) en 
 que se esta usando el modelo, se pueden devolver diferentes etiquetas para un mismo atributo.
 
-> Información: Estrictamente hablando, los atributos son parte de las [vistas](structure-views.md). Pero declarar las 
+> Info: Estrictamente hablando, los atributos son parte de las [vistas](structure-views.md). Pero declarar las 
   etiquetas en los modelos, a menudo, es muy conveniente y puede generar a un código muy limpio y reutilizable.
 
-## Escenarios <a name="scenarios"></a>
+## Escenarios <span id="scenarios"></span>
 
 Un modelo puede usarse en diferentes *escenarios*. Por ejemplo, un modelo 'Usuario', puede ser utilizado para recoger 
 entradas de inicio de sesión de usuarios, pero también puede usarse para generar usuarios. En diferentes escenarios, 
@@ -190,7 +190,7 @@ class User extends ActiveRecord
 }
 ```
 
-> Información: En el anterior y en los siguientes ejemplos, las clases modelo extienden a [[yii\db\ActiveRecord]] 
+> Info: En el anterior y en los siguientes ejemplos, las clases modelo extienden a [[yii\db\ActiveRecord]] 
   porque el uso de múltiples escenarios normalmente sucede con clases de [Active Records](db-active-record.md).
 
 El método 'scenarios()' devuelve un array cuyas claves son el nombre de escenario y los valores correspondientes a los 
@@ -224,7 +224,7 @@ La característica escenario se usa principalmente en las [validaciones](#valida
 [asignación masiva de atributos](#massive-assignment). Aunque también se puede usar para otros propósitos. Por 
 ejemplo, se pueden declarar [etiquetas de atributo](#attribute-labels) diferentes basándose en el escenario actual.
 
-## Reglas de Validación <a name="validation-rules"></a>
+## Reglas de Validación <span id="validation-rules"></span>
 
 Cuando un modelo recibe datos del usuario final, estos deben ser validados para asegurar que cumplan ciertas reglas 
 (llamadas *reglas de validación*, también conocidas como *reglas de negocio*). Por ejemplo, dado un modelo 
@@ -234,7 +234,7 @@ para ayudar al usuario a corregir estos errores.
 
 Se puede llamar a [[yii\base\Model::validate()]] para validar los datos recibidos. El método se usará para validar las 
 reglas declaradas en [[yii\base\Model::rules()]] para validar cada atributo relevante. Si no se encuentran errores, se 
-devolverá true. De otro modo, este almacenará los errores en la propiedad [[yii\base\Model::errors]] y devolverá falso.
+devolverá `true`. De otro modo, este almacenará los errores en la propiedad [[yii\base\Model::errors]] y devolverá falso.
  Por ejemplo:
 
 ```php
@@ -294,7 +294,7 @@ Si no se especifica la propiedad 'on', la regla se aplicará en todos los escena
 Un atributo será validado si y sólo si es un atributo activo declarado en 'scenarios()' y esta asociado con una o más 
 reglas activas declaradas en 'rules()'.
 
-## Asignación Masiva <a name="massive-assignment"></a>
+## Asignación Masiva <span id="massive-assignment"></span>
 
 La asignación masiva es una buena forma de rellenar los atributos de un modelo con las entradas de usuario en una 
 única línea de código. Rellena los atributos de un modelo asignando los datos de entrada directamente a las 
@@ -316,7 +316,7 @@ $model->subject = isset($data['subject']) ? $data['subject'] : null;
 $model->body = isset($data['body']) ? $data['body'] : null;
 ```
 
-### Atributos Seguros <a name="safe-attributes"></a>
+### Atributos Seguros <span id="safe-attributes"></span>
 
 La asignación masiva sólo se aplica a los llamados *atributos seguros* qué son los atributos listados en 
 [[yii\base\Model::scenarios()]] para el actual [[yii\base\Model::scenario|scenario]] del modelo. Por ejemplo, si en el 
@@ -333,7 +333,7 @@ public function scenarios()
 }
 ```
 
-> Información: La razón de que la asignación masiva sólo se aplique a los atributos seguros es debida a que se quiere 
+> Info: La razón de que la asignación masiva sólo se aplique a los atributos seguros es debida a que se quiere 
 controlar qué atributos pueden ser modificados por los datos del usuario final. Por ejemplo, si el modelo 'User' tiene 
 un atributo 'permission' que determina los permisos asignados al usuario, se quiere que estos atributos sólo sean 
 modificados por administradores desde la interfaz backend.
@@ -355,7 +355,7 @@ public function rules()
 }
 ```
 
-### Atributos Inseguros <a name="unsafe-attributes"></a>
+### Atributos Inseguros <span id="unsafe-attributes"></span>
 
 Como se ha descrito anteriormente, el método [[yii\base\Model::scenarios()]] sirve para dos propósitos: determinar qué 
 atributos deben ser validados y determinar qué atributos son seguros. En situaciones poco comunes, se puede querer 
@@ -379,7 +379,7 @@ que hacer explícitamente como en el ejemplo:
 $model->secret = $secret;
 ```
 
-## Exportación de Datos <a name="data-exporting"></a>
+## Exportación de Datos <span id="data-exporting"></span>
 
 A menudo necesitamos exportar modelos a diferentes formatos. Por ejemplo, se puede querer convertir un conjunto de 
 modelos a formato JSON o Excel. El proceso de exportación se puede dividir en dos pasos independientes. En el primer 
@@ -403,7 +403,7 @@ elementos de datos, llamados *campos*, queremos poner en el array resultante y e
 hecho, es la manera por defecto de exportar modelos en desarrollo de servicios Web RESTful, tal y como se describe en 
 [Formatos de Respuesta](rest-response-formatting.md).
 
-### Campos <a name="fields"></a>
+### Campos <span id="fields"></span>
 
 Un campo es simplemente un elemento nombrado en el array resultante de ejecutar el método [[yii\base\Model::toArray()]]
  de un modelo.
@@ -459,12 +459,12 @@ public function fields()
 }
 ```
 
-> Atención: debido a que por defecto todos los atributos de un modelo serán incluidos en el array exportado, se debe 
+> Warning: debido a que por defecto todos los atributos de un modelo serán incluidos en el array exportado, se debe 
 examinar los datos para asegurar que no contienen información sensible. Si existe dicha información, se debe 
 sobrescribir 'fields()' para filtrarla. En el anterior ejemplo, se filtra 'aut_key', 'password_hash' y 
 'password_reset_token'.
 
-## Mejores Prácticas <a name="best-practices"></a>
+## Mejores Prácticas <span id="best-practices"></span>
 
 Los modelos son los lugares centrales para representar datos de negocio, reglas y lógica. Estos a menudo necesitan ser 
 reutilizados en diferentes lugares. En una aplicación bien diseñada, los modelos normalmente son más grandes que los 

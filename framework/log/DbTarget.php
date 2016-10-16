@@ -32,9 +32,10 @@ use yii\helpers\VarDumper;
 class DbTarget extends Target
 {
     /**
-     * @var Connection|string the DB connection object or the application component ID of the DB connection.
+     * @var Connection|array|string the DB connection object or the application component ID of the DB connection.
      * After the DbTarget object is created, if you want to change this property, you should only assign it
      * with a DB connection object.
+     * Starting from version 2.0.2, this can also be a configuration array for creating the object.
      */
     public $db = 'db';
     /**
@@ -66,7 +67,12 @@ class DbTarget extends Target
         foreach ($this->messages as $message) {
             list($text, $level, $category, $timestamp) = $message;
             if (!is_string($text)) {
-                $text = VarDumper::export($text);
+                // exceptions may not be serializable if in the call stack somewhere is a Closure
+                if ($text instanceof \Throwable || $text instanceof \Exception) {
+                    $text = (string) $text;
+                } else {
+                    $text = VarDumper::export($text);
+                }
             }
             $command->bindValues([
                 ':level' => $level,

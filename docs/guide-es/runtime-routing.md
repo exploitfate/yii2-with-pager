@@ -1,4 +1,4 @@
-﻿Enrutamiento y Creación de URLS
+Enrutamiento y Creación de URLS
 ===============================
 
 Cuando una aplicación Yii empieza a procesar una URL solicitada, lo primero que hace es convertir la URL en una 
@@ -6,21 +6,21 @@ Cuando una aplicación Yii empieza a procesar una URL solicitada, lo primero que
 [acción de controlador](structure-controllers.md) correspondiente para gestionar la petición. A este proceso se 
 le llama *enrutamiento*.
 
-El proceso inverso se llama *creación de URLs*, y crea una URL a partir de una ruta dada y unos parámetros de consulta 
-(query) asociados. Cuando posteriormente se solicita la URL creada, el proceso de enrutamiento puede resolverla y 
+El proceso inverso se llama *creación de URLs*, y crea una URL a partir de una ruta dada y unos parámetros de consulta (query) asociados. Cuando posteriormente se solicita la URL creada, el proceso de enrutamiento puede resolverla y 
 convertirla en la ruta original con los parámetros asociados.
 
 La principal pieza encargada del enrutamiento y de la creación de URLs es [[yii\web\UrlManager|URL manager]], que se 
 registra como el componente de aplicación `urlManager`. El [[yii\web\UrlManager|URL manager]] proporciona el método 
 [[yii\web\UrlManager::parseRequest()|parseRequest()]] para convertir una petición entrante en una ruta y sus 
-parámetros asociados y el método [yii\web\UrlManager::createUrl()|createUrl()]] para crear una URL a partir de una 
+parámetros asociados y el método [[yii\web\UrlManager::createUrl()|createUrl()]] para crear una URL a partir de una 
 ruta dada y sus parámetros asociados.
 
 Configurando el componente `urlManager` en la configuración de la aplicación, se puede dotar a la aplicación de 
 reconocimiento arbitrario de formatos de URL sin modificar el código de la aplicación existente.  Por ejemplo, se 
 puede usar el siguiente código para crear una URL para la acción `post/view`:
 
-``` php use yii\helpers\Url;
+```php
+use yii\helpers\Url;
 
 // Url::to() llama a UrlManager::createUrl() para crear una URL
 $url = Url::to(['post/view', 'id' => 100]);
@@ -36,7 +36,8 @@ los parámetros.
 /posts/100
 ```
 
-## Formatos de URL <a name="url-formats"></a>
+
+## Formatos de URL <span id="url-formats"></span>
 
 El [[yii\web\UrlManager|URL manager]] soporta dos formatos de URL: el formato predeterminado de URL y el formato URL 
 amigable (pretty URL).
@@ -58,7 +59,7 @@ Se puede cambiar entre los dos formatos de URL conmutando la propiedad
 [[yii\web\UrlManager::enablePrettyUrl|enablePrettyUrl]] del [[yii\web\UrlManager|URL manager]] sin cambiar ningún 
 otro código de aplicación.
 
-## Enrutamiento <a name="routing"></a>
+## Enrutamiento <span id="routing"></span>
 
 El Enrutamiento involucra dos pasos. El primero, la petición (request) entrante se convierte en una ruta y sus 
 parámetros de consulta asociados. En el segundo paso, se crea la correspondiente 
@@ -85,16 +86,13 @@ acción. Empezando por la primera parte de la ruta, la aplicación, sigue los si
    módulo actual. Si está listado, se crea un modulo de acuerdo con la configuración encontrada en el listado de 
    módulos, y se seguirá el Paso 2 para gestionar la siguiente parte de la ruta bajo el contexto de la creación de un 
    nuevo módulo.
-4. Trata el ID como si se tratara de un ID de controlador y crea un objeto controlador. Sigue el siguiente paso con la 
-   parte restante de la ruta.
-5. El controlador busca el ID en su [[yii\base\Controller::actions()|action map]]. Si lo encuentra, crea una acción de 
-   acuerdo con la configuración encontrada en el mapa. De otra forma, el controlador intenta crear una acción en linea 
-   definida por un método de acción correspondiente al ID actual.
+4. Trata el ID como si se tratara de un ID de controlador y crea un objeto controlador. Sigue el siguiente paso con la    parte restante de la ruta.
+5. El controlador busca el ID en su [[yii\base\Controller::actions()|action map]]. Si lo encuentra, crea una acción de    acuerdo con la configuración encontrada en el mapa. De otra forma, el controlador intenta crear una acción en linea    definida por un método de acción correspondiente al ID actual.
 
 Si ocurre algún error entre alguno de los pasos anteriores, se lanzará una excepción de tipo 
 [[yii\web\NotFoundHttpException]], indicando el fallo de proceso de enrutamiento.
 
-### Ruta Predeterminada <a name="default-route"></a>
+### Ruta Predeterminada <span id="default-route"></span>
 
 Cuando una petición se convierte en una ruta vacía, se usa la llamada *ruta predeterminada*. Por defecto, la ruta 
 predeterminada es `site/index`, que hace referencia a la acción `index` del controlador `site`. Se puede personalizar 
@@ -108,7 +106,8 @@ aplicación como en el siguiente ejemplo:
 ];
 ```
 
-### Ruta `catchAll` <a name="catchall-route"></a>
+
+### Ruta `catchAll` <span id="catchall-route"></span>
 
 A veces, se puede querer poner la aplicación Web en modo de mantenimiento temporalmente y mostrar la misma pagina de 
 información para todas las peticiones. Hay varias maneras de lograr este objetivo. Pero una de las maneras más simples 
@@ -127,7 +126,7 @@ Con la anterior configuración, se usar la acción `site/offline` para gestionar
 La propiedad `catchAll` debe tener un array cuyo primer elemento especifique una ruta, y el resto de elementos 
 (pares nombre-valor) especifiquen los parámetros [ligados a la acción](structure-controllers.md#action-parameters).
 
-## Creación de URLs <a name="creating-urls"></a>
+## Creación de URLs <span id="creating-urls"></span>
 
 Yii proporciona un método auxiliar (helper method) [[yii\helpers\Url::to()]] para crear varios tipos de URLs a partir 
 de las rutas dadas y sus parámetros de consulta asociados. Por ejemplo, 
@@ -153,12 +152,12 @@ echo Url::to(['post/index'], 'https');
 
 Hay que tener en cuenta que en el anterior ejemplo, asumimos que se está usando el formato de URL predeterminado. 
 Si habilita el formato de URL amigable, las URLs creadas serán diferentes, de acuerdo con las 
-[[yii\web\UrlManager::rules|URL rules] que se usen.
+[[yii\web\UrlManager::rules|URL rules]] que se usen.
 
 La ruta que se pasa al método [[yii\helpers\Url::to()]] es context sensitive. Esto quiere decir que puede ser una ruta 
 *relativa* o una ruta *absoluta* que serán tipificadas de acuerdo con las siguientes reglas:
 
-- Si una ruta es una cadena vacía, se usará la [yii\web\Controller::route|route]] solicitada actualmente. 
+- Si una ruta es una cadena vacía, se usará la [[yii\web\Controller::route|route]] solicitada actualmente. 
 - Si la ruta no contiene ninguna barra `/`, se considerará que se trata de un ID de acción del controlador actual y se 
   le antepondrá el valor [[\yii\web\Controller::uniqueId|uniqueId]] del controlador actual. 
 - Si la ruta no tiene barra inicial, se considerará que se trata de una ruta relativa al modulo actual y se le 
@@ -201,6 +200,7 @@ echo Url::to('@example');
 
 // una URL absoluta: http://example.com/images/logo.gif
 echo Url::to('/images/logo.gif', true);```
+```
 
 Además del método `to()`, la clase auxiliar [[yii\helpers\Url]] también proporciona algunos otros métodos de creación 
 de URLs. Por ejemplo,
@@ -221,7 +221,8 @@ echo Url::canonical();
 echo Url::previous();
 ```
 
-## Uso de URLs Amigables <a name="using-pretty-urls"></a>
+
+## Uso de URLs Amigables <span id="using-pretty-urls"></span>
 
 Para utilizar URLs amigables, hay que configurar el componente `ulrManager` en la configuración de la aplicación como 
 en el siguiente ejemplo:
@@ -246,7 +247,7 @@ amigable. El resto de propiedades son opcionales. Sin embargo, la anterior confi
 
 * [[yii\web\UrlManager::showScriptName|showScriptName]]: esta propiedad determina si el script de entrada debe ser 
   incluido en las URLs generadas. Por ejemplo, en lugar de crear una URL `/index.php/post/100`, estableciendo la 
-  propiedad con valor true, la URL que se generará sera `/post/100`.
+  propiedad con valor `true`, la URL que se generará sera `/post/100`.
 * [[yii\web\UrlManager::enableStrictParsing|enableStrictParsing]]: esta propiedad determina si se habilita la 
   conversión de petición estricta, si se habilita, la URL solicitada tiene que encajar al menos con uno de las 
   [[yii\web\UrlManager::rules|rules]] para poder ser tratada como una petición valida, o se lanzará una 
@@ -257,13 +258,14 @@ amigable. El resto de propiedades son opcionales. Sin embargo, la anterior confi
   y crear URLs. Esta es la propiedad principal con la que se debe trabajar para crear URLs que satisfagan el formato 
   de un requerimiento particular de la aplicación.
 
-> Nota: Para ocultar el nombre del script de entrada en las URLs generadas, además de establecer el 
+> Note: Para ocultar el nombre del script de entrada en las URLs generadas, además de establecer el 
   [[yii\web\UrlManager::showScriptName|showScriptName]] a falso, puede ser necesaria la configuración del servidor Web 
   para que identifique correctamente que script PHP debe ejecutarse cuando se solicita una URL que no lo especifique. 
   Si se usa el servidor Web Apache, se puede utilizar la configuración recomendada descrita en la sección de 
   [Instalación](start-installation.md#recommended-apache-configuration).
 
-### Regalas de URL <a name="url-rules"></a>
+
+### Reglas de URL <span id="url-rules"></span>
 
 Una regla de URL es una instancia de [[yii\web\UrlRule]] o de una clase hija. Cada URL consiste en un patrón utilizado 
 para cotejar la parte de información de ruta de las URLs, una ruta, y algunos parámetros de consulta. Una URL puede 
@@ -314,14 +316,15 @@ se necesita a menudo cuando se quieren configurar otras propiedades de la regla 
 De forma predeterminada si no se especifica la opción `class` en la configuración de una regla, se utilizará la clase 
 predeterminada [[yii\web\UrlRule]].
 
-### Parameters Asociativos <a name="named-parameters"></a>
+
+### Parameters Asociativos <span id="named-parameters"></span>
 
 Una regla de URL puede asociarse a una determinado grupo de parámetros de consulta que se hayan sido especificados en 
 el patrón con el formato `<ParamName:RegExp>`, donde `ParamName` especifica el nombre del parámetro y `RegExp` es una 
-expresión regular opcional que se usa para encontrara los valores de los parámetros. Si no se especifica `RegExp` 
+expresión regular opcional que se usa para encontrar los valores de los parámetros. Si no se especifica `RegExp` 
 significa que el parámetro debe ser una cadena de texto sin ninguna barra.
 
-> Nota: Solo se pueden especificar expresiones regulares para los parámetros. La parte restante del patrón se 
+> Note: Solo se pueden especificar expresiones regulares para los parámetros. La parte restante del patrón se 
   considera texto plano.
 
 Cuando se usa una regla para convertir una URL, esta rellenara los parámetros asociados con los valores que coincidan 
@@ -348,8 +351,8 @@ Cuando se usen las reglas para convertir URLs:
 - `/index.php/post/100` se convierte en la ruta `post/view` y el parámetro `id` cuyo valor es 100 usando la segunda 
   regla;
 - `/index.php/posts/php` provocara una [[yii\web\NotFoundHttpException]] cuando 
-  [[yii\web\UrlManager::enableStrictParsing]] sea true, ya que no coincide ninguno de los parámetros . Si 
-  [[yii\web\UrlManager::enableStrictParsing]] es false (valor predeterminado), se devolverá como ruta la parte de 
+  [[yii\web\UrlManager::enableStrictParsing]] sea `true`, ya que no coincide ninguno de los parámetros . Si 
+  [[yii\web\UrlManager::enableStrictParsing]] es `false` (valor predeterminado), se devolverá como ruta la parte de 
   información `posts/php`.
 
 Y cuando las se usen las reglas para crear URLs:
@@ -365,7 +368,8 @@ Y cuando las se usen las reglas para crear URLs:
    reglas. Hay que tener en cuenta que si no se aplica ninguna de las reglas, la URL se genera simplemente añadiendo 
    la parte de información de la ruta y todos los parámetros como parte de la consulta.
 
-### Parametrización de Rutas <a name="parameterizing-routes"></a>
+
+### Parametrización de Rutas <span id="parameterizing-routes"></span>
 
 Se pueden incrustar nombres de parámetros en la ruta de una regla de URL. Esto permite a la regla de URL poder ser 
 usada para que coincida con varias rutas. Por ejemplo, la siguiente regla incrusta los parámetros `controller` y 
@@ -386,7 +390,7 @@ como `comment/create`.
 Del mismo modo, para crear una URL para una ruta `comment/index`, se aplicará la tercera regla, que crea una URL 
 `/index.php/comments`.
 
-> Información: Mediante la parametrización de rutas es posible reducir el numero de reglas de URL e incrementar 
+> Info: Mediante la parametrización de rutas es posible reducir el numero de reglas de URL e incrementar 
   significativamente el rendimiento del [[yii\web\UrlManager|URL manager]].
 
 De forma predeterminada, todos los parámetros declarados en una regla son requeridos. Si una URL solicitada no 
@@ -418,7 +422,8 @@ La regla anterior puede usarse para convertir o crear cualquiera de las siguient
 
 Sin usar ningún parámetro opcional, se tendrían que crear 4 reglas para lograr el mismo resultado.
 
-### Reglas con Nombres de Servidor <a name="rules-with-server-names"></a>
+
+### Reglas con Nombres de Servidor <span id="rules-with-server-names"></span>
 
 Es posible incluir nombres de servidores Web en los parámetros de las URLs. Esto es practico principalmente cuando una 
 aplicación debe tener distintos comportamientos paro diferentes nombres de servidores Web. Por ejemplo, las siguientes 
@@ -442,13 +447,13 @@ ejemplo, la siguiente regla convertirá la URL `http://en.example.com/posts` en 
 ]
 ```
 
-> Nota: Las reglas con nombres de servidor NO deben incluir el subdirectorio del script de entrada (entry script) en 
+> Note: Las reglas con nombres de servidor NO deben incluir el subdirectorio del script de entrada (entry script) en 
   sus patrones. Por ejemplo, is la aplicación se encuentra en `http://www.example.com/sandbox/blog`, entonces se debe 
   usar el patrón `http://www.example.com/posts` en lugar de `http://www.example.com/sandbox/blog/posts`. Esto 
   permitirá que la aplicación se pueda desarrollar en cualquier directorio sin la necesidad de cambiar el código de la 
   aplicación.
 
-### Sufijos de URL <a name="url-suffixes"></a>
+### Sufijos de URL <span id="url-suffixes"></span>
 
 Se puede querer añadir sufijos a las URLs para varios propósitos. Por ejemplo, se puede añadir `.html`a las URLs para 
 que parezcan URLs para paginas HTML estáticas; también se puede querer añadir `.json` a las URLs para indicar el tipo 
@@ -474,9 +479,9 @@ propiedad [[yii\web\UrlManager::suffix]] como en el siguiente ejemplo de configu
 La configuración anterior permitirá al [[yii\web\UrlManager|URL manager]] reconocer las URLs solicitadas y a su vez 
 crear URLs con el sufijo `.html`.
 
-> Consejo: Se puede establecer `/` como el prefijo de URL para que las URLs finalicen con una barra.
+> Tip: Se puede establecer `/` como el prefijo de URL para que las URLs finalicen con una barra.
 
-> Nota: Cuando se configura un sufijo de URL, si una URL solicitada no tiene el sufijo, se considerará como una URL 
+> Note: Cuando se configura un sufijo de URL, si una URL solicitada no tiene el sufijo, se considerará como una URL 
   desconocida. Esta es una practica recomendada para SEO (optimización en motores de búsqueda).
 
 A veces, se pueden querer usar sufijos diferentes para URLs diferentes. Esto se puede conseguir configurando la 
@@ -506,7 +511,8 @@ siguiente configuración contiene una regla de URL personalizada que usa el sufi
 ]
 ```
 
-### Métodos HTTP <a name="http-methods"></a>
+
+### Métodos HTTP <span id="http-methods"></span>
 
 Cuando se implementan APIs RESTful, normalmente se necesita que ciertas URLs se conviertan en otras de acuerdo con el 
 método HTTP que se esté usando. Esto se puede hacer fácilmente prefijando los métodos HTTP soportados como los 
@@ -523,15 +529,16 @@ convertirá en `post/view`.
 ]
 ```
 
-> Nota: Si una regla de URL contiene algún método HTTP en su patrón, la regla solo se usará para aplicar conversiones. 
+> Note: Si una regla de URL contiene algún método HTTP en su patrón, la regla solo se usará para aplicar conversiones. 
   Se omitirá cuando se llame a [[yii\web\UrlManager|URL manager]] para crear URLs.
 
-> Consejo: Para simplificar el enrutamiento en APIs RESTful, Yii proporciona una clase de reglas de URL 
+> Tip: Para simplificar el enrutamiento en APIs RESTful, Yii proporciona una clase de reglas de URL 
   [[yii\rest\UrlRule]] especial que es bastante eficiente y soporta ciertas características como pluralización de IDs 
   de controladores. Para conocer más detalles, se puede visitar la sección [Enrutamiento](rest-routing.md) acerca de 
   el desarrollo de APIs RESTful.
 
-### Personalización de Reglas <a name="customizing-rules"></a>
+
+### Personalización de Reglas <span id="customizing-rules"></span>
 
 En los anteriores ejemplos, las reglas de URL se han declarado principalmente en términos de pares de patrón-ruta. 
 Este es un método de acceso directo que se usa a menudo. En algunos escenarios, se puede querer personalizar la regla 
@@ -551,10 +558,11 @@ array completo de configuración para especificar una regla. El siguiente ejempl
 ]
 ```
 
-> Información: De forma predeterminada si no se especifica una opción `class` para una configuración de regla, se 
+> Info: De forma predeterminada si no se especifica una opción `class` para una configuración de regla, se 
   usará la clase predeterminada [[yii\web\UrlRule]].
 
-### Adición de Reglas Dinámicamente <a name="adding-rules"></a>
+
+### Adición de Reglas Dinámicamente <span id="adding-rules"></span>
 
 Las reglas de URL se pueden añadir dinámicamente en el [[yii\web\UrlManager|URL manager]]. A menudo se necesita por 
 [módulos](structure-modules.md) redistribubles que se encargan de gestionar sus propias reglas de URL. Para que las 
@@ -575,7 +583,7 @@ public function bootstrap($app)
 Hay que tener en cuenta se deben añadir estos módulos en [[yii\web\Application::bootstrap]] para que puedan participar 
 en el proceso de [bootstrapping](runtime-bootstrapping.md)
 
-### Creación de Clases de Reglas <a name="creating-rules"></a>
+### Creación de Clases de Reglas <span id="creating-rules"></span>
 
 A pesar del hecho de que de forma predeterminada la clase [[yii\web\UrlRule]] lo suficientemente flexible para la 
 mayoría de proyectos, hay situaciones en las que se tiene que crear una clase de reglas propia. Por ejemplo, en un 
@@ -634,7 +642,7 @@ Y usa la nueva clase de regla en la configuración de [[yii\web\UrlManager::rule
 ]
 ```
 
-## Consideración del Rendimiento <a name="performance-consideration"></a>
+## Consideración del Rendimiento <span id="performance-consideration"></span>
 
 Cuando se desarrolla una aplicación Web compleja, es importante optimizar las reglas de URL para que tarden el mínimo 
 tiempo posible en convertir las peticiones y crear URLs.

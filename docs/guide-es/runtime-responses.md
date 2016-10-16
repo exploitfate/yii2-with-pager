@@ -1,4 +1,4 @@
-﻿Respuestas
+Respuestas
 ==========
 
 Cuando una aplicación finaliza la gestión de una [petición (request)](runtime-requests.md), genera un objeto 
@@ -13,7 +13,7 @@ usuario final tal y como se explica a continuación.
 
 En esta sección, se describirá como generar y enviar respuestas a usuarios finales.
 
-## Códigos de Estado <a name="status-code"></a>
+## Códigos de Estado <span id="status-code"></span>
 
 Una de las primeras cosas que debería hacerse cuando se genera una respuesta es indicar si la petición se ha 
 gestionado correctamente. Esto se indica asignando la propiedad [[yii\web\Response::statusCode]] a la que se le puede 
@@ -56,7 +56,7 @@ Si la excepción que se quiere lanzar no se encuentra en la lista anterior, se p
 throw new \yii\web\HttpException(402);
 ```
 
-## Cabeceras HTTP <a name="http-headers"></a> 
+## Cabeceras HTTP <span id="http-headers"></span> 
 
 Se puede enviar cabeceras HTTP modificando el [[yii\web\Response::headers|header collection]] en el componente 
 `response`. Por ejemplo:
@@ -74,11 +74,11 @@ $headers->set('Pragma', 'no-cache');
 $values = $headers->remove('Pragma');
 ```
 
-> Información: Los nombres de las cabeceras case insensitive, es decir, no discriminan entre mayúsculas y minúsculas. 
+> Info: Los nombres de las cabeceras case insensitive, es decir, no discriminan entre mayúsculas y minúsculas. 
 Además, las nuevas cabeceras registradas no se enviarán al usuario hasta que se llame al método 
 [[yii\web\Response::send()]].
 
-## Cuerpo de la Respuesta<a name="response-body"></a>
+## Cuerpo de la Respuesta<span id="response-body"></span>
 
 La mayoría de las respuestas deben tener un cuerpo que contenga el contenido que se quiere mostrar a los usuarios 
 finales.
@@ -156,11 +156,11 @@ public function actionInfo()
 }
 ```
 
-> Nota: Si se crea un objeto response propio, no se podrán aprovechar las configuraciones asignadas para el componente 
+> Note: Si se crea un objeto response propio, no se podrán aprovechar las configuraciones asignadas para el componente 
 `response` en la configuración de la aplicación. Sin embargo, se puede usar la 
 [inyección de dependencias](concept-di-container.md) para aplicar la configuración común al nuevo objeto response.
 
-## Redirección del Navegador <a name="browser-redirection"></a>
+## Redirección del Navegador <span id="browser-redirection"></span>
 
 La redirección del navegador se basa en el envío de la cabecera HTTP `Location`. Debido a que esta característica se 
 usa comúnmente, Yii proporciona soporte especial para ello.
@@ -188,7 +188,7 @@ respuesta.
 \Yii::$app->response->redirect('http://example.com/new', 301)->send();
 ```
 
-> Información: De forma predeterminada, el método [[yii\web\Response::redirect()]] asigna el estado de respuesta al 
+> Info: De forma predeterminada, el método [[yii\web\Response::redirect()]] asigna el estado de respuesta al 
 código de estado 302 que indica al navegador que recurso solicitado está *temporalmente* alojado en una URI diferente. 
 Se puede enviar un código de estado 301 para expresar que el recurso se ha movido de forma *permanente*.
 
@@ -197,12 +197,12 @@ redirección del navegador automática. Para resolver este problema, el método 
 una cabecera `X-Redirect` con el valor de la URL de redirección. En el lado del cliente se puede escribir código 
 JavaScript para leer la esta cabecera y redireccionar el navegador como corresponda.
 
-> Información: Yii contiene el archivo JavaScript `yii.js` que proporciona un conjunto de utilidades comunes de 
+> Info: Yii contiene el archivo JavaScript `yii.js` que proporciona un conjunto de utilidades comunes de 
 JavaScript, incluyendo la redirección de navegador basada en la cabecera `X-Redirect`. Por tanto, si se usa este 
 fichero JavaScript (registrándolo *asset bundle* [[yii\web\YiiAsset]]), no se necesitará escribir nada más para tener 
 soporte en redirecciones AJAX.
 
-## Enviar Archivos <a name="sending-files"></a>
+## Enviar Archivos <span id="sending-files"></span>
 
 Igual que con la redirección, el envío de archivos es otra característica que se basa en cabeceras HTTP especificas. 
 Yii proporciona un conjunto de métodos para dar soporte a varias necesidades del envío de ficheros. Todos ellos 
@@ -242,7 +242,7 @@ algunos servidores Web populares.
 - Nginx: [X-Accel-Redirect](http://wiki.nginx.org/XSendfile)
 - Cherokee: [X-Sendfile and X-Accel-Redirect](http://www.cherokee-project.com/doc/other_goodies.html#x-sendfile)
 
-## Enviar la Respuesta <a name="sending-response"></a>
+## Enviar la Respuesta <span id="sending-response"></span>
 
 El contenido en una respuesta no se envía al usuario hasta que se llama al método [[yii\web\Response::send()]]. De 
 forma predeterminada, se llama a este método automáticamente al final de [[yii\base\Application::run()]]. Sin embargo, 

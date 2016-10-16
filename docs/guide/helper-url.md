@@ -4,11 +4,10 @@ Url Helper
 Url helper provides a set of static methods for managing URLs.
 
 
-Getting common URLs
--------------------
+## Getting Common URLs <span id="getting-common-urls"></span>
 
 There are two methods you can use to get common URLs: home URL and base URL of the current request. In order to get
-home URL use the follwing:
+home URL, use the following:
 
 ```php
 $relativeHomeUrl = Url::home();
@@ -16,10 +15,10 @@ $absoluteHomeUrl = Url::home(true);
 $httpsAbsoluteHomeUrl = Url::home('https');
 ```
 
-If no parameter is passed, URL generated is relative. You can either pass `true` to get absolute URL for the current
-schema or specify schema explicitly (`https`, `http`).
+If no parameter is passed, the generated URL is relative. You can either pass `true` to get an absolute URL for the current
+schema or specify a schema explicitly (`https`, `http`).
 
-To get base URL of the current request use the following:
+To get the base URL of the current request use the following:
  
 ```php
 $relativeBaseUrl = Url::base();
@@ -29,10 +28,10 @@ $httpsAbsoluteBaseUrl = Url::base('https');
 
 The only parameter of the method works exactly the same as for `Url::home()`.
 
-Creating URLs
--------------
 
-In order to create URL to a given route use `Url::toRoute()` method. The method uses [[\yii\web\UrlManager]] to create
+## Creating URLs <span id="creating-urls"></span>
+
+In order to create a URL to a given route use the `Url::toRoute()` method. The method uses [[\yii\web\UrlManager]] to create
 a URL:
 
 ```php
@@ -43,18 +42,18 @@ You may specify the route as a string, e.g., `site/index`. You may also use an a
 query parameters for the URL being created. The array format must be:
 
 ```php
-// generates: /index.php?r=site/index&param1=value1&param2=value2
+// generates: /index.php?r=site%2Findex&param1=value1&param2=value2
 ['site/index', 'param1' => 'value1', 'param2' => 'value2']
 ```
 
 If you want to create a URL with an anchor, you can use the array format with a `#` parameter. For example,
 
 ```php
-// generates: /index.php?r=site/index&param1=value1#name
+// generates: /index.php?r=site%2Findex&param1=value1#name
 ['site/index', 'param1' => 'value1', '#' => 'name']
 ```
 
-A route may be either absolute or relative. An absolute route has a leading slash (e.g. `/site/index`), while a relative
+A route may be either absolute or relative. An absolute route has a leading slash (e.g. `/site/index`) while a relative
 route has none (e.g. `site/index` or `index`). A relative route will be converted into an absolute one by the following rules:
 
 - If the route is an empty string, the current [[\yii\web\Controller::route|route]] will be used;
@@ -62,20 +61,27 @@ route has none (e.g. `site/index` or `index`). A relative route will be converte
   and will be prepended with [[\yii\web\Controller::uniqueId]];
 - If the route has no leading slash (e.g. `site/index`), it is considered to be a route relative to the current module
   and will be prepended with the module's [[\yii\base\Module::uniqueId|uniqueId]].
+  
+Starting from version 2.0.2, you may specify a route in terms of an [alias](concept-aliases.md). If this is the case,
+the alias will first be converted into the actual route which will then be turned into an absolute route according
+to the above rules.
 
 Below are some examples of using this method:
 
 ```php
-// /index?r=site/index
+// /index.php?r=site%2Findex
 echo Url::toRoute('site/index');
 
-// /index?r=site/index&src=ref1#name
+// /index.php?r=site%2Findex&src=ref1#name
 echo Url::toRoute(['site/index', 'src' => 'ref1', '#' => 'name']);
 
-// http://www.example.com/index.php?r=site/index
+// /index.php?r=post%2Fedit&id=100     assume the alias "@postEdit" is defined as "post/edit"
+echo Url::toRoute(['@postEdit', 'id' => 100]);
+
+// http://www.example.com/index.php?r=site%2Findex
 echo Url::toRoute('site/index', true);
 
-// https://www.example.com/index.php?r=site/index
+// https://www.example.com/index.php?r=site%2Findex
 echo Url::toRoute('site/index', 'https');
 ```
 
@@ -92,18 +98,21 @@ The first argument could be:
 - an empty string: the currently requested URL will be returned;
 - a normal string: it will be returned as is.
 
-When `$scheme` is specified (either a string or true), an absolute URL with host info (obtained from
+When `$scheme` is specified (either a string or `true`), an absolute URL with host info (obtained from
 [[\yii\web\UrlManager::hostInfo]]) will be returned. If `$url` is already an absolute URL, its scheme
 will be replaced with the specified one.
 
 Below are some usage examples:
 
 ```php
-// /index?r=site/index
+// /index.php?r=site%2Findex
 echo Url::to(['site/index']);
 
-// /index?r=site/index&src=ref1#name
+// /index.php?r=site%2Findex&src=ref1#name
 echo Url::to(['site/index', 'src' => 'ref1', '#' => 'name']);
+
+// /index.php?r=post%2Fedit&id=100     assume the alias "@postEdit" is defined as "post/edit"
+echo Url::to(['@postEdit', 'id' => 100]);
 
 // the currently requested URL
 echo Url::to();
@@ -121,8 +130,24 @@ echo Url::to('@web/images/logo.gif', true);
 echo Url::to('@web/images/logo.gif', 'https');
 ```
 
-Remember URL for future use
----------------------------
+Starting from version 2.0.3, you may use [[yii\helpers\Url::current()]] to create a URL based on the currently
+requested route and GET parameters. You may modify or remove some of the GET parameters or add new ones by
+passing a `$params` parameter to the method. For example,
+
+```php
+// assume $_GET = ['id' => 123, 'src' => 'google'], current route is "post/view"
+
+// /index.php?r=post%2Fview&id=123&src=google
+echo Url::current();
+
+// /index.php?r=post%2Fview&id=123
+echo Url::current(['src' => null]);
+// /index.php?r=post%2Fview&id=100&src=google
+echo Url::current(['id' => 100]);
+```
+
+
+## Remember URLs <span id="remember-urls"></span>
 
 There are cases when you need to remember URL and afterwards use it during processing of the one of sequential requests.
 It can be achieved in the following way:
@@ -145,8 +170,7 @@ $url = Url::previous();
 $productUrl = Url::previous('product');
 ```
                         
-Finding out if URL is relative
-------------------------------
+## Checking Relative URLs <span id="checking-relative-urls"></span>
 
 To find out if URL is relative i.e. it doesn't have host info part, you can use the following code:
                              

@@ -11,10 +11,10 @@ para os [models](structure-models.md) (modelos), incluirão os resultados dos mo
 de saída.
 
 
-## Actions (Ações) <a name="actions"></a>
+## Actions (Ações) <span id="actions"></span>
 
-Os controllers são compostos por unidades básicas chamadas *ações* que podem ser
-tratados pelos usuários finais a fim de realizar a sua execução.
+Os controllers são compostos por unidades básicas chamadas de *ações* que podem 
+ser tratados pelos usuários finais a fim de realizar a sua execução.
 
 No exemplo a seguir mostra um controller `post` com duas ações: `view` e `create`:
 
@@ -67,7 +67,7 @@ para a ação `view` com o novo ID criado pelo model. Caso contrário, a ação 
 a view `create` na qual os usuário poderão fornecer os dados necessários.
 
 
-## Routes (Rotas) <a name="routes"></a>
+## Routes (Rotas) <span id="routes"></span>
 
 Os usuários finais abordarão as ações por meio de *rotas*. Uma rota é uma string composta
 pelas seguintes partes:
@@ -93,7 +93,7 @@ a ação `index` do controller `site` será executada. Para mais detalhes sobre 
 as ações são resolvidas pelas rotas, por favor consulte a seção [Roteamento e Criação de URL](runtime-routing.md).
 
 
-## Criando Controllers <a name="creating-controllers"></a>
+## Criando Controllers <span id="creating-controllers"></span>
 
 Em [[yii\web\Application|aplicações Web]], os controllers devem estender de [[yii\web\Controller]] 
 ou de suas classes filhas. De forma semelhante, em [[yii\console\Application|aplicaçoes console]], 
@@ -110,7 +110,7 @@ class SiteController extends Controller
 ```
 
 
-### IDs dos Controllers <a name="controller-ids"></a>
+### IDs dos Controllers <span id="controller-ids"></span>
 
 Normalmente, um controller é projetado para tratar as requisições relativos a 
 um determinado tipo de recurso. Por esta razão, os IDs dos controllers geralmente
@@ -119,7 +119,7 @@ Por exemplo, você pode usar o `article` como o ID do um controller para tratar
 dados de artigos.
 
 Por padrão, os IDs dos controllers devem conter apenas esses caracteres: 
-letras inglesas em caixa baixa, números, underscores (underline), traços e barras. 
+letras inglesas em caixa baixa, números, underscores (underline), hífens e barras. 
 Por exemplo, `article` e `post-comment` são ambos IDs de controllers válidos,
 enquanto `article?`, `PostComment`, `admin\post` não são.
 
@@ -131,44 +131,45 @@ em caixa alto ou caixa baixa, números, underscores (underline) e barras, onde a
 barras são usadas para separar os níveis dos subdiretórios (por exemplo, `panels/admin`).
 
 
-### Nomenclatura da Classe do Controller <a name="controller-class-naming"></a>
+### Nomenclatura da Classe do Controller <span id="controller-class-naming"></span>
 
 Os nomes da classes dos controllers podem ser derivadas dos IDs dos controllers 
-de acordo com as seguintes regras:
+de acordo com as seguintes procedimentos:
 
-* Colocar em caixa alta a primeira letra de cada palavra separadas por traço. 
-  Observe que se o ID do controller possuir barras, a regra é aplicada apenas na
-  parte após a última barra no ID.
-* Remover os traços e substituir todas as barras por barras invertidas.
-* Adicionar `Controller` como sufixo.
-* E preceder ao [[yii\base\Application::controllerNamespace|namespace controller]].
+1. Colocar em caixa alta a primeira letra de cada palavra separadas por traço. 
+   Observe que se o ID do controller possuir barras, a regra é aplicada apenas na
+   parte após a última barra no ID.
+2. Remover os traços e substituir todas as barras por barras invertidas.
+3. Adicionar `Controller` como sufixo.
+4. Preceder ao [[yii\base\Application::controllerNamespace|namespace do controller]].
 
 Segue alguns exemplos, assumindo que o [[yii\base\Application::controllerNamespace|namespace do controller]]
 tenha por padrão o valor `app\controllers`:
 
-* `article` deriva-se de `app\controllers\ArticleController`;
-* `post-comment` deriva-se de `app\controllers\PostCommentController`;
-* `admin/post-comment` deriva-se de `app\controllers\admin\PostCommentController`;
-* `adminPanels/post-comment` deriva-se de `app\controllers\adminPanels\PostCommentController`.
+* `article` torna-se `app\controllers\ArticleController`;
+* `post-comment` torna-se `app\controllers\PostCommentController`;
+* `admin/post-comment` torna-se `app\controllers\admin\PostCommentController`;
+* `adminPanels/post-comment` torna-se `app\controllers\adminPanels\PostCommentController`.
 
 As classes dos controllers devem ser [autoloadable](concept-autoloading.md). 
 Por esta razão, nos exemplos anteriores, o controller `article` deve ser salvo 
 no arquivo cuja [alias](concept-aliases.md) é `@app/controllers/ArticleController.php`;
-enquanto o controller `admin/post2-comment` deve ser salvo no `@app/controllers/admin/Post2CommentController.php`.
+enquanto o controller `admin/post-comment` deve ser salvo no `@app/controllers/admin/PostCommentController.php`.
 
-> Informação: No último exemplo `admin/post2-comment`, mostra como você pode colocar 
+> Informação: No último exemplo `admin/post-comment`, mostra como você pode colocar 
 um controller em um subdiretório do [[yii\base\Application::controllerNamespace|namespace controller]]. Isto é útil quando você quiser organizar seus controllers em diversas 
 categorias e não quiser usar [módulos](structure-modules.md).
 
 
-### Mapeando Controllers <a name="controller-map"></a>
+### Mapeando Controllers <span id="controller-map"></span>
 
-Você pode configurar um [[yii\base\Application::controllerMap|mapeamento de controllers]] para superar as barreiras impostas pelos IDs de controllers e pelos nomes de classes
-descritos acima. Isto é útil principalmente quando quiser esconder alguns controllers
+Você pode configurar um [[yii\base\Application::controllerMap|mapeamento de controllers]] 
+para superar as barreiras impostas pelos IDs de controllers e pelos nomes de classes
+descritos acima. Isto é útil principalmente quando quiser esconder controllers
 de terceiros na qual você não tem controle sobre seus nomes de classes.
 
 Você pode configurar o [[yii\base\Application::controllerMap|mapeamento de controllers]] 
-na [configuração da aplicação](structure-applications.md#application-configurations) como o seguinte exemplo:
+na [configuração da aplicação](structure-applications.md#application-configurations). Por exemplo:
 
 ```php
 [
@@ -186,15 +187,14 @@ na [configuração da aplicação](structure-applications.md#application-configu
 ```
 
 
-### Controller Padrão <a name="default-controller"></a>
+### Controller Padrão <span id="default-controller"></span>
 
 Cada aplicação tem um controller padrão que é especificado pela propriedade [[yii\base\Application::defaultRoute]].
 Quando uma requisição não especificar uma [rota](#id-da-rota), será utilizada a 
 rota especificada pela propriedade. 
 Para as [[yii\web\Application|aplicações Web]], este valor é `'site'`, enquanto 
 para as [[yii\console\Application|aplicações console]] é `help`. Portanto, se uma 
-URL `http://hostname/index.php` for usada, significa que o controller `site` será 
-usado nesta requisição.
+URL for `http://hostname/index.php`, o controller `site` será utilizado nesta requisição.
 
 Você pode alterar o controller padrão como a seguinte [configuração da aplicação](structure-applications.md#application-configurations):
 
@@ -205,7 +205,7 @@ Você pode alterar o controller padrão como a seguinte [configuração da aplic
 ```
 
 
-## Criando Ações <a name="creating-actions"></a>
+## Criando Ações <span id="creating-actions"></span>
 
 Criar ações pode ser tão simples como a definição dos chamados *métodos de ação* 
 em uma classe controller. Um método de ação é um método *público* cujo nome inicia 
@@ -232,36 +232,36 @@ class SiteController extends Controller
 ```
 
 
-### IDs das Ações <a name="action-ids"></a>
+### IDs das Ações <span id="action-ids"></span>
 
 Uma ação muitas vezes é projetada para realizar uma manipulação em particular sobre
 um recurso. Por esta razão, os IDs das ações geralmente são verbos, tais como `view`, `update`, etc.
 
 Por padrão, os IDs das ações devem conter apenas esses caracteres: letras inglesas 
 em caixa baixa, números, underscores (underline) e traços. Os traços em um ID da
-ação são usados para separar palavras. Por exemplo, `view`, `update2`, `comment-post` 
-todos são IDs válidos, enquanto `view?`, `Update` não são.
+ação são usados para separar palavras. Por exemplo, `view`, `update2` e `comment-post` 
+são IDs válidos, enquanto `view?` e `Update` não são.
 
 Você pode criar ações de duas maneiras: ações inline (em sequência) e
 ações standalone (autônomas). Uma ação inline é definida pelo método
 de uma classe controller, enquanto uma ação standalone é uma classe que estende de 
-[[yii\base\Action]] ou de suas classes filhas. As ações inline exigem menos esforço
+[[yii\base\Action]] ou de uma classe-filha. As ações inline exigem menos esforço
 para serem criadas e muitas vezes as preferidas quando não se tem a intenção de 
 reutilizar estas ações. Ações standalone, por outro lado, são criados principalmente 
 para serem utilizados em diferentes controllers ou para serem distribuídos como
 [extensions](structure-extensions.md).
 
 
-### Ações Inline <a name="inline-actions"></a>
+### Ações Inline <span id="inline-actions"></span>
 
 As ações inline referem-se a os chamados métodos de ação, que foram descritos anteriormente.
 
 Os nomes dos métodos de ações são derivadas dos IDs das ações de acordo com os
-seguintes critérios:
+seguintes procedimentos:
 
-* Colocar em caixa alta a primeira letra de cada palavra do ID da ação;
-* Remover os traços;
-* Adicionar o prefixo `action`.
+1. Colocar em caixa alta a primeira letra de cada palavra do ID da ação;
+2. Remover os traços;
+3. Adicionar o prefixo `action`.
 
 Por exemplo, `index` torna-se `actionIndex` e `hello-world` torna-se `actionHelloWorld`.
 
@@ -276,10 +276,10 @@ para serem criadas. No entanto, se você deseja reutilizar algumas ações em di
 lugares ou se deseja distribuir uma ação, deve considerar defini-la como uma *ação standalone*.
 
 
-### Ações Standalone <a name="standalone-actions"></a>
+### Ações Standalone <span id="standalone-actions"></span>
 
 Ações standalone são definidas por classes de ações que estendem de [[yii\base\Action]]
-ou de suas classes filhas. 
+ou de uma classe-filha. 
 Por example, nas versões do Yii, existe a [[yii\web\ViewAction]] e a [[yii\web\ErrorAction]], ambas são ações standalone.
 
 Para usar uma ação standalone, você deve *mapear as ações* sobrescrevendo o método
@@ -325,13 +325,13 @@ class HelloWorldAction extends Action
 ```
 
 
-### Resultados da Ação <a name="action-results"></a>
+### Resultados da Ação <span id="action-results"></span>
 
 O valor de retorno do método de ação ou do método `run()` de uma ação standalone 
 são importantes. Eles representam o resultado da ação correspondente.
 
 O valor de retorno pode ser um objeto de [resposta](runtime-responses.md) que 
-que enviará como resposta aos usuários finais.
+será enviado como resposta aos usuários finais.
 
 * Para [[yii\web\Application|aplicações Web]], o valor de retorno também poder
   ser algum dado arbitrário que será atribuído à propriedade [[yii\web\Response::data]] 
@@ -355,7 +355,7 @@ public function actionForward()
 ```
 
 
-### Parâmetros da Ação <a name="action-parameters"></a>
+### Parâmetros da Ação <span id="action-parameters"></span>
 
 Os métodos de ações para as ações inline e os métodos `run()` para as ações
 standalone podem receber parâmetros, chamados *parâmetros da ação*.
@@ -416,7 +416,7 @@ aplicações Web. Para aplicações console, por favor, consulte a seção
 [Comandos de Console](tutorial-console.md) para mais detalhes.
 
 
-### Default Action <a name="default-action"></a>
+### Default Action <span id="default-action"></span>
 
 Cada controller tem uma ação padrão especificado pela propriedade 
 [[yii\base\Controller::defaultAction]].
@@ -443,7 +443,7 @@ class SiteController extends Controller
 ```
 
 
-## Ciclo de Vida do Controller <a name="controller-lifecycle"></a>
+## Ciclo de Vida do Controller <span id="controller-lifecycle"></span>
 
 Ao processar uma requisição, a [aplicação](structure-applications.md) criará 
 um controller baseada na [rota](#routes) solicitada. O controller, então, se submeterá
@@ -456,7 +456,7 @@ ao seguinte ciclo de vida para concluir a requisição:
    * Se o ID da ação for encontrada para corresponder a um método de ação, uma ação inline será criada;
    * Caso contrário, uma exceção [[yii\base\InvalidRouteException]] será lançada.
 3. De forma sequencial, o controller chama o método `beforeAction()` da aplicação, o módulo (se o controller pertencer a um módulo) e o controller.
-   * Se uma das chamadas retornar false, o restante dos métodos `beforeAction()` serão ignoradas e a execução da ação será cancelada.
+   * Se uma das chamadas retornar `false`, o restante dos métodos subsequentes `beforeAction()` serão ignoradas e a execução da ação será cancelada.
    * Por padrão, cada método `beforeAction()` desencadeia a execução de um evento chamado `beforeAction` na qual você pode associar a uma função (handler).
 4. O controller executa a ação:
    * Os parâmetros da ação serão analizados e populados a partir dos dados obtidos pela requisição;
@@ -465,19 +465,19 @@ ao seguinte ciclo de vida para concluir a requisição:
 6. A aplicação obterá o resultado da ação e irá associá-lo na [resposta](runtime-responses.md).
 
 
-## Best Practices <a name="best-practices"></a>
+## Boas Práticas <span id="best-practices"></span>
 
 Em uma aplicação bem projetada, frequentemente os controllers são bem pequenos na 
 qual cada ação possui poucas linhas de códigos.
 Se o controller for um pouco complicado, geralmente indica que terá que refaze-lo 
 e passar algum código para outro classe.
 
-Em resumo, os controllers:
+Segue algumas boas práticas em destaque. Os controllers:
 
 * podem acessar os dados de uma [requisição](runtime-requests.md);
 * podem chamar os métodos dos [models](structure-models.md) e outros componentes
   de serviço com dados da requisição;
 * podem usar as [views](structure-views.md) para compor as respostas;
-* NÃO devem processar os dados da requisição - isto deve ser feito pelos [models](structure-models.md);
+* NÃO devem processar os dados da requisição - isto deve ser feito na [camada model (modelo)](structure-models.md);
 * devem evitar inserir códigos HTML ou outro código de apresentação - é melhor 
-que sejam feitos nas [views](structure-views.md).
+  que sejam feitos nas [views](structure-views.md).
